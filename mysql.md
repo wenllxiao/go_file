@@ -1,0 +1,6 @@
+```mysql
+# 查看每张表大小G显示
+SELECT TABLE_SCHEMA, TABLE_NAME, DATA_LENGTH/(1024*1024*1024) AS TABLE_SIZE_GB
+FROM information_schema.TABLES order by DATA_LENGTH desc
+
+```
