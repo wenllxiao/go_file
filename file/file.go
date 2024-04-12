@@ -3,6 +3,7 @@ package main
 import (
 	"archive/zip"
 	"bytes"
+	"compress/gzip"
 	"github.com/golang-module/carbon"
 	"io"
 	"os"
@@ -11,6 +12,30 @@ import (
 
 func main() {
 
+}
+
+// gzipFile
+func gzipFile(srcFile string) (string, error) {
+	src, err := os.Open(srcFile)
+	if err != nil {
+		return "", err
+	}
+	defer src.Close()
+	dstFile := srcFile + ".gz"
+	dst, err := os.Create(dstFile)
+	if err != nil {
+		return "", err
+	}
+	defer dst.Close()
+	//创建gzip压缩写入器
+	gw := gzip.NewWriter(dst)
+	defer gw.Close()
+	//将源文件的数据写入gzip压缩写入器
+	_, err = io.Copy(gw, src)
+	if err != nil {
+		return "", err
+	}
+	return dstFile, nil
 }
 
 // zipFile 压缩文件
